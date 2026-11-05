@@ -44,7 +44,7 @@ export default function AdminDashboardPage() {
   }
 
   const { performance, health } = analyticsData;
-  const totalStaffCount = usersData?.meta?.total || 0;
+  const totalStaffCount = usersData?.meta?.total || 0; //what is the point of meta?
   const totalRolesCount = rolesData?.meta?.total || 0;
   const recentLogs = logsData?.data || [];
 

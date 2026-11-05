@@ -351,7 +351,7 @@ export default function AdminLogsPage() {
           {/* Date Picker Range */}
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex items-center gap-1.5 bg-background border border-border px-2.5 py-1 rounded-xl">
-              <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
+              {/* <Calendar className="w-3.5 h-3.5 text-muted-foreground" /> */}
               <span className="text-[11px] text-muted-foreground">From:</span>
               <input
                 type="date"
@@ -426,6 +426,7 @@ export default function AdminLogsPage() {
             </div>
 
             {/* Limit Selector */}
+            <div>
             <select
               value={limit}
               onChange={(e) => {
@@ -451,7 +452,8 @@ export default function AdminLogsPage() {
                 <FilterX className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Reset</span>
               </Button>
-            )}
+            )} 
+            </div>
           </div>
         </div>
       </div>
