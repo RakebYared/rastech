@@ -41,19 +41,13 @@ export function useUsers(params: FetchUsersParams = {}) {
   return useQuery<{ data: UserAccountItem[]; meta: any }>({
     queryKey: ["users", search, status, page, limit, sort, order],
     queryFn: async () => {
-      const query = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString(),
-        status,
-        sort,
-        order,
+
+      const res = await axiosInstance.get("/api/v1/user?", {
+        params : {
+          ...params,
+          search: search.trim().length >= 2 ? search.trim() : undefined,
+        }
       });
-
-      if (search && search.trim().length >= 2) {
-        query.append("search", search.trim());
-      }
-
-      const res = await axiosInstance.get(`/api/v1/user?${query.toString()}`);
       return res.data;
     },
     staleTime: 1000 * 30,

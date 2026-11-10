@@ -50,19 +50,25 @@ export function useRoles(params: FetchRoleParams = {}) {
   return useQuery<{ data: RoleItem[]; meta: any }>({
     queryKey: ["roles", search, page, limit, sort, order],
     queryFn: async () => {
-      const query = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString(),
-        sort,
-        order,
+      const res = await axiosInstance.get("/api/v1/role", {params:
+        {...params,
+          search : search && search.trim().length >= 2 ? search.trim() : undefined
+        }
       });
-
-      if (search && search.trim().length >= 2) {
-        query.append("search", search.trim());
-      }
-
-      const res = await axiosInstance.get(`/api/v1/role?${query.toString()}`);
       return res.data;
+      // const query = new URLSearchParams({
+      //   page: page.toString(),
+      //   limit: limit.toString(),
+      //   sort,
+      //   order,
+      // });
+
+      // if (search && search.trim().length >= 2) {
+      //   query.append("search", search.trim());
+      // }
+
+      // const res = await axiosInstance.get(`/api/v1/role?${query.toString()}`);
+      // return res.data;
     },
     staleTime: 1000 * 30,
   });

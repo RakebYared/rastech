@@ -84,7 +84,10 @@ export function useLogs(params: FetchLogInput) {
      endDate,
    ],
    queryFn: async () => {
-     const res = await axiosInstance.get("/api/v1/log", {params:params})
+     const res = await axiosInstance.get("/api/v1/log", {params:
+      {...params,
+        search : search && search.trim().length >= 2 ? search.trim() : undefined 
+      }})
      return res.data
      // const query = new URLSearchParams({
      //   page: page.toString(),
