@@ -23,5 +23,6 @@ declare module "next-auth/jwt" {
     exp: number;
     token: string;
     invalid?: boolean;
+    lastChecked?: number;
   }
 }

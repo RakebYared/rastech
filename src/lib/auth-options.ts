@@ -32,6 +32,7 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
+      const now = Date.now();
       if (user) {
         const { userAgent, ip } = await getUserAgent();
         const expiresAt = new Date(Date.now() + SESSION_MAX_AGE * 1000);
@@ -54,21 +55,28 @@ export const authOptions: NextAuthOptions = {
         token.token = sessionToken;
         token.invalid = false;
         token.exp = Math.floor(expiresAt.getTime() / 1000);
+        token.lastChecked = now;
       }
 
       if (!token.token) {
         token.invalid = true;
         return token;
       }
-
-      const dbSession = await prisma.session.findUnique({
-        where: { sessionToken: token.token },
-        select: { expiresAt: true },
-      });
+      
+      const shouldVerifyDb = !token.lastChecked || (now - (token.lastChecked as number)) >= 30 * 1000
+      
+      if (shouldVerifyDb) {
+        const dbSession = await prisma.session.findUnique({
+          where: { sessionToken: token.token },
+          select: { expiresAt: true },
+        });
 
       if (!dbSession || dbSession.expiresAt < new Date()) {
         token.invalid = true;
+      } else {
+        token.lastChecked = now
       }
+    }
 
       return token;
     },
