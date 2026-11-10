@@ -50,7 +50,7 @@ export default async function RootLayout({
         <QueryProvider>
           <ThemeProvider>
             {children}
-            <Toaster richColors position="top-right" closeButton />
+            <Toaster richColors position="top-center" closeButton />
           </ThemeProvider>
         </QueryProvider>
       </body>

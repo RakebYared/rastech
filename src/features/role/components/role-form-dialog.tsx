@@ -203,7 +203,11 @@ export function RoleFormDialog({ isOpen, onClose, role }: RoleFormDialogProps) {
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-medium text-foreground">Guard Name</label>
+              <label 
+                className="font-medium text-foreground">Guard Name 
+                <span className="text-destructive">*</span>
+
+              </label>
               <Input
                 type="text"
                 value={guardName}
