@@ -33,12 +33,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LogDetailsDialog } from "@/features/log/components/log-details-dialog";
 import { toast } from "sonner";
+import { useDebounce } from "@/lib/use-debounce";
 
 type SortField = "createdAt" | "type" | "severity";
 type SortOrder = "asc" | "desc";
 
 export default function AdminLogsPage() {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search);
   const [severityFilter, setSeverityFilter] = useState<LogSeverity | undefined>(undefined);
   const [selectedUserId, setSelectedUserId] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
@@ -56,7 +58,7 @@ export default function AdminLogsPage() {
   const staffUsers = usersData?.data || [];
 
   const { data, isLoading, refetch, isFetching } = useLogs({
-    search,
+    search: debouncedSearch,
     page,
     limit,
     sort: sortField,
