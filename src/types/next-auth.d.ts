@@ -2,7 +2,7 @@
 import { DefaultSession, DefaultUser } from "next-auth";
 import { JWT } from "next-auth/jwt";
 
-export interface CustomUser {
+export interface ISession {
   id: string;
   name?: string | null | undefined;
   userName: string;
@@ -12,14 +12,14 @@ export interface CustomUser {
 
 declare module "next-auth" {
   interface Session {
-    user?: CustomUser & DefaultSession["user"];
+    user?: ISession & DefaultSession["user"];
   }
 
-  interface User extends CustomUser {}
+  interface User extends ISession {}
 }
 
 declare module "next-auth/jwt" {
-  interface JWT extends CustomUser {
+  interface JWT extends ISession {
     exp: number;
     token: string;
     invalid?: boolean;
