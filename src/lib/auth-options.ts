@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
       const now = Date.now();
       if (user) {
         const { userAgent, ip } = await getUserAgent();
-        const expiresAt = new Date(Date.now() + SESSION_MAX_AGE * 1000);
+        const expiresAt = new Date(now + SESSION_MAX_AGE * 1000);
         const sessionToken = randomBytes(32).toString("hex");
 
         await prisma.session.create({
@@ -98,24 +98,24 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  events: {
-    async signIn({ user }) {
-      await prisma.log.create({
-        data: {
-          type: "AUTH_LOGIN_SUCCESS",
-          severity: "INFO",
-          message: `User ${user.userName} successfully logged in.`,
-          userId: user.id,
-        },
-      });
-    },
-  },
+  // events: {
+  //   async signIn({ user }) {
+  //     await prisma.log.create({
+  //       data: {
+  //         type: "AUTH_LOGIN_SUCCESS",
+  //         severity: "INFO",
+  //         message: `User ${user.userName} successfully logged in.`,
+  //         userId: user.id,
+  //       },
+  //     });
+  //   },
+  // },
 
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
 };
 
-export default NextAuth(authOptions);
+// export default NextAuth(authOptions);
 
 export const getActionSession = async () => {
   const session = await getServerSession(authOptions);
